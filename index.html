@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineAlgo - Discover Amazing Movies</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo"> 
+                <span class="logo-icon">🎬</span> 
+                <span>CineAlgo</span>
+                </span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#hero" class="nav-link active">Home</a></li>
+                <li><a href="#discover" class="nav-link">Discover</a></li>
+                <li><a href="#watchlist" class="nav-link">Watchlist <span class="watchlist-badge"
+                            id="navWatchlistCount">0</span></a></li>
+                <li><a href="#" class="nav-link signin-btn">Sign In</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Explore the Cinematic Universe Curated by AI</h1>
+            <p class="hero-subtitle">Why scroll endlessly? Let the algorithm decide.</p>
+        </div>
+    </section>
+
+    <!-- Discover Section -->
+    <section class="discover" id="discover">
+        <div class="discover-container">
+            <!-- Header -->
+            <div class="discover-header">
+                <h1 class="discover-main-title">Discover Movies</h1>
+                <p class="discover-main-subtitle">Find your perfect movie match with our advanced search and AI
+                    recommendations</p>
+            </div>
+
+            <!-- Elegant Search Container -->
+            <div class="elegant-search-container">
+                <div class="search-box-elegant">
+                    <div class="search-input-wrapper">
+                        <span class="search-icon-left">🔍</span>
+                        <input type="text" id="movieSearchInput" class="elegant-search-input"
+                            placeholder="Search for movies, actors, directors..." autocomplete="off">
+                        <button id="searchButton" class="elegant-search-btn">
+                            <span>Search</span>
+                            <span class="btn-icon">🎬</span>
+                        </button>
+                    </div>
+                    <div class="search-suggestions">
+                        <span class="suggestion-label">Popular:</span>
+                        <span class="suggestion-tag"
+                            onclick="document.getElementById('movieSearchInput').value='Avengers'; window.cineAlgo.handleSearch();">Avengers</span>
+                        <span class="suggestion-tag"
+                            onclick="document.getElementById('movieSearchInput').value='Inception'; window.cineAlgo.handleSearch();">Inception</span>
+                        <span class="suggestion-tag"
+                            onclick="document.getElementById('movieSearchInput').value='Interstellar'; window.cineAlgo.handleSearch();">Interstellar</span>
+                        <span class="suggestion-tag"
+                            onclick="document.getElementById('movieSearchInput').value='The Dark Knight'; window.cineAlgo.handleSearch();">Dark
+                            Knight</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="sophisticated-loading" id="loadingSpinner" style="display: none;">
+                <div class="loading-content">
+                    <div class="elegant-spinner">
+                        <div class="spinner-circle"></div>
+                        <div class="spinner-circle"></div>
+                        <div class="spinner-circle"></div>
+                    </div>
+                    <h3 class="loading-title">Searching Movies...</h3>
+                    <p class="loading-subtitle">Finding the perfect matches for you</p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section-elegant" id="resultsSection" style="display: none;">
+                <div class="results-header-elegant">
+                    <div class="results-title-section">
+                        <h2>Search Results</h2>
+                        <p class="results-subtitle">Found amazing movies for you</p>
+                    </div>
+                    <div class="results-controls">
+                        <div class="view-toggle">
+                            <button class="view-btn active">
+                                <span>⊞</span> Grid
+                            </button>
+                            <button class="view-btn">
+                                <span>☰</span> List
+                            </button>
+                        </div>
+                        <select class="elegant-select">
+                            <option>Sort by Relevance</option>
+                            <option>Sort by Rating</option>
+                            <option>Sort by Year</option>
+                            <option>Sort by Popularity</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Results Grid -->
+                <div class="sophisticated-grid" id="resultsGrid">
+                    <!-- Movie cards will be populated here -->
+                </div>
+            </div>
+
+            <!-- No Results -->
+            <div class="no-results-elegant" id="noResults" style="display: none;">
+                <div class="no-results-content">
+                    <div class="no-results-illustration">
+                        <span class="search-glass">🔍</span>
+                        <span class="empty-state">📽️</span>
+                    </div>
+                    <h3 class="no-results-title">No Movies Found</h3>
+                    <p class="no-results-text">We couldn't find any movies matching your search. Try different keywords
+                        or explore our recommendations.</p>
+                    <div class="no-results-actions">
+                        <button class="retry-btn" onclick="document.getElementById('movieSearchInput').focus()">
+                            Try Again
+                        </button>
+                        <button class="browse-btn" onclick="window.cineGenius.searchPopular()">
+                            Browse Popular
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Watchlist Section -->
+    <section class="watchlist" id="watchlist">
+        <div class="watchlist-container">
+            <!-- Watchlist Header -->
+            <div class="watchlist-header">
+                <div class="watchlist-title-section">
+                    <h1 class="watchlist-main-title">My Watchlist</h1>
+                    <p class="watchlist-subtitle">Movies you want to watch later</p>
+                </div>
+                <div class="watchlist-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="watchlistCount">0</span>
+                        <span class="stat-label">Movies</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalRuntime">0h</span>
+                        <span class="stat-label">Runtime</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Watchlist Controls -->
+            <div class="watchlist-controls">
+                <div class="watchlist-filters">
+                    <button class="filter-btn active" data-filter="all">All Movies</button>
+                    <button class="filter-btn" data-filter="recent">Recently Added</button>
+                    <button class="filter-btn" data-filter="rated">Highly Rated</button>
+                    <button class="filter-btn" data-filter="genres">By Genre</button>
+                </div>
+                <div class="watchlist-actions">
+                    <button class="action-btn secondary" onclick="window.cineGenius.exportWatchlist()">
+                        <span>📤</span> Export List
+                    </button>
+                    <button class="action-btn danger" onclick="window.cineGenius.clearWatchlist()">
+                        <span>🗑️</span> Clear All
+                    </button>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="watchlist-empty" id="watchlistEmpty">
+                <div class="empty-content">
+                    <div class="empty-icon">📚</div>
+                    <h3 class="empty-title">Your watchlist is empty</h3>
+                    <p class="empty-text">Start adding movies you want to watch later!</p>
+                    <button class="empty-action-btn"
+                        onclick="document.getElementById('discover').scrollIntoView({behavior: 'smooth'})">
+                        <span>🔍</span> Discover Movies
+                    </button>
+                </div>
+            </div>
+
+            <!-- Watchlist Grid -->
+            <div class="watchlist-grid" id="watchlistGrid">
+                <!-- Watchlist movies will be populated here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot -->
+    <div class="chat-toggle" id="chatToggle">
+        <span class="chat-icon">💬</span>
+    </div>
+
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-title">
+                <span>🤖</span>
+                <span>CineBot</span>
+            </div>
+            <button class="chat-close" id="chatClose">&times;</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-text">Hi! I'm CineBot. Ask me about movies, get recommendations, or chat about your
+                    favorite films! 🎬</div>
+            </div>
+        </div>
+        <div class="chat-loading" id="chatLoading" style="display: none;">
+            <span>🤖</span>
+            <span>CineBot is thinking...</span>
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask about movies...">
+            <button class="chat-send" id="chatSend">➤</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>
