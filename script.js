@@ -21,9 +21,9 @@ class CineAlgo {
         this.isOpen = false;
         this.isLoading = false;
 
-        // Gemini API
-        this.GEMINI_API_KEY = 'AIzaSyBGV9RSbf6k_ptggm8P9R_Nphpaa5kydWo';
-        this.GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${this.GEMINI_API_KEY}`;
+        // Groq API
+        this.GROQ_API_KEY = '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';
+        this.GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
         this.setupChatbotEvents();
         console.log('Chatbot initialized');
@@ -125,28 +125,33 @@ class CineAlgo {
     }
 
     async getGeminiResponse(userMessage) {
-        const prompt = `You are CineBot, an AI movie recommendation assistant. Be helpful, friendly, and enthusiastic about movies. Keep responses concise but informative. User message: ${userMessage}`;
+        const systemPrompt = 'You are CineBot, an AI movie recommendation assistant for CineAlgo. Be helpful, friendly, and enthusiastic about movies. Keep responses concise (2-3 sentences) but informative. Give specific movie recommendations.';
 
-        const response = await fetch(this.GEMINI_API_URL, {
+        const response = await fetch(this.GROQ_API_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.GROQ_API_KEY}`
+            },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 1000
-                }
+                model: 'llama-3.3-70b-versatile',
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: userMessage }
+                ],
+                temperature: 0.7,
+                max_tokens: 500
             })
         });
 
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            console.error('Gemini API Error:', response.status, errorData);
+            const errorText = await response.text();
+            console.error('Groq API Error:', response.status, errorText);
             throw new Error('API Error');
         }
 
         const data = await response.json();
-        return data.candidates[0].content.parts[0].text;
+        return data.choices[0].message.content;
     }
 
     // MOVIE SEARCH FUNCTIONALITY
